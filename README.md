@@ -40,7 +40,7 @@
     <li><a href="#parts">Parts</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#datasets">Datasets</a></li>
+    <li><a href="#dataset">Dataset</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -53,7 +53,9 @@
 
 
 In this project, everything starts from a spoken speech from which features are extracted to recognize which word was said (which turns into a classification task). The end goal is to accurately identify a set of predefined words from short audio clips.
+
 There are six classes to recognize. There is no problem adding as much as you may wish. You should change the number of model category output and input dataset labels a bit.
+
 For instance, the task in this project will be to classify audio between six words in the Farsi language (words meaning in the bracket):
 *   Garm [Hot]
 *   Sard [Cold]
@@ -97,7 +99,7 @@ To clear the data, we read the zero values ​​after reading the audio signals
 Finally, we sorted data by numbers, and the original audio and the noise files are stored in a folder with the word name as the label.
 
 
-**Pre-processing:**
+**Pre-processing**
 
 <p> <img src="https://user-images.githubusercontent.com/47852354/143778553-c23df68f-26c6-49c4-a922-e246680864c7.png" width="500"> </p> 
 
@@ -117,7 +119,8 @@ MFCC vectors might vary in size for different audio inputs; CNN can't handle seq
 
 *MFCC (Mel Frequency Cepstral Coefficients): In short, In sound processing, the Mel-frequency cepstrum (MFC) represents the short-term power spectrum of a sound, based on a linear cosine transform of a log power spectrum on a nonlinear Mel scale of frequency.*
 
-Process:
+**Process**
+
 We will process the signal and get its **MFCC**, so finally, we are pooling signal with 0 to the size of predefined *max_width*. Then, we read all sound files from each labeled directory and do the mfcc transform, then save the mfcc created matrices in a .npy file named after the name of the label to use for the training network.
 
 
@@ -125,7 +128,7 @@ We will process the signal and get its **MFCC**, so finally, we are pooling sign
 
 We use a Convolutional Neural Network (CNN) with one-dimensional convolutions on the raw audio waveform to classify samples. 
 
-<p> <img src="https://data-flair.training/blogs/wp-content/uploads/sites/2/2019/07/speech-recognition-using-CNN.png" width="500"> </p> 
+<p> <img src="https://user-images.githubusercontent.com/47852354/143780016-d9ce88f3-19bf-4c09-9b04-2daf39e9c5d3.png" width="500"> </p> 
 
 
 
@@ -143,7 +146,6 @@ We use a Convolutional Neural Network (CNN) with one-dimensional convolutions on
 The model achieves **99.73%** accuracy on the validation set. The results show that the model can predict samples of words it has seen during training with high accuracy. Still, it somewhat struggles to generalize to terms outside the training data scope and extremely noisy samples.
 
 <p> <img src="https://user-images.githubusercontent.com/47852354/143778330-22752161-0207-4610-950b-5f59015621ef.png" width="300"> </p> 
-
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -166,7 +168,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 We will use our own dataset which we have collected for this project.
 This database has been collected by **Telegram** messengers (social network), thanks its voice recording.
 First we record voice data from about 250 different people varrying the sex, age and save these data, then we categorized each voice data to its specific group (labeling) and did the task of data cleaning and converting its format from **.ogg** to **.wav**. This dataset has been prepared after several days of efforts by a group of 10 people.
-
 
 Each folder contains approximately 250 audio files for each word. The name of the folder is actually the label of those audio files. You can play some audio files randomly to get an overall idea.
 
