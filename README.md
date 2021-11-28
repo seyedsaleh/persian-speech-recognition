@@ -11,17 +11,17 @@
 <br />
 <div align="center">
 
-  <h3 align="center">word-recognition</h3>
+  <h3 align="center">persian-speech-recognition</h3>
 
   <p align="center">
     Simple single persian word speech recognition using CNN on Raspberry Pi board 🗣
     <br />
-    <a href="https://github.com/seyedsaleh/word-recognition"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/seyedsaleh/persian-speech-recognition"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://colab.research.google.com/drive/1mlSL36sGjiHFRqwwSazPifH6K6O7bxf4?usp=sharing">Demo persian word speech recognition (Google Colab)</a>
     .
-    <a href="https://github.com/seyedsaleh/word-recognition/issues">Report Bug & Request Feature</a>
+    <a href="https://github.com/seyedsaleh/persian-speech-recognition/issues">Report Bug & Request Feature</a>
   </p>
 </div>
 
@@ -183,7 +183,7 @@ Each folder contains approximately 250 audio files for each word. The name of th
 Seyedmohammadsaleh Mirzatabatabaei - [@seyedsaleh](https://github.com/seyedsaleh) - seyedsaleh.edu@gmail.com
 
 
-Project Link: [https://github.com/seyedsaleh/word-recognition](https://github.com/seyedsaleh/word-recognition)
+Project Link: [https://github.com/seyedsaleh/persian-speech-recognition](https://github.com/seyedsaleh/persian-speech-recognition)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -199,14 +199,14 @@ Project Link: [https://github.com/seyedsaleh/word-recognition](https://github.co
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/seyedsaleh/word-recognition.svg?style=for-the-badge
-[contributors-url]: https://github.com/seyedsaleh/word-recognition/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/seyedsaleh/word-recognition.svg?style=for-the-badge
-[forks-url]: https://github.com/seyedsaleh/word-recognition/network/members
-[stars-shield]: https://img.shields.io/github/stars/seyedsaleh/word-recognition.svg?style=for-the-badge
-[stars-url]: https://github.com/seyedsaleh/word-recognition/stargazers
-[issues-shield]: https://img.shields.io/github/issues/seyedsaleh/word-recognition.svg?style=for-the-badge
-[issues-url]: https://github.com/seyedsaleh/word-recognition/issues
-[license-shield]: https://img.shields.io/github/license/seyedsaleh/word-recognition.svg?style=for-the-badge
-[license-url]: https://github.com/seyedsaleh/word-recognition/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/seyedsaleh/persian-speech-recognition.svg?style=for-the-badge
+[contributors-url]: https://github.com/seyedsaleh/persian-speech-recognition/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/seyedsaleh/persian-speech-recognition.svg?style=for-the-badge
+[forks-url]: https://github.com/seyedsaleh/persian-speech-recognition/network/members
+[stars-shield]: https://img.shields.io/github/stars/seyedsaleh/persian-speech-recognition.svg?style=for-the-badge
+[stars-url]: https://github.com/seyedsaleh/persian-speech-recognition/stargazers
+[issues-shield]: https://img.shields.io/github/issues/seyedsaleh/persian-speech-recognition.svg?style=for-the-badge
+[issues-url]: https://github.com/seyedsaleh/persian-speech-recognition/issues
+[license-shield]: https://img.shields.io/github/license/seyedsaleh/persian-speech-recognition.svg?style=for-the-badge
+[license-url]: https://github.com/seyedsaleh/persian-speech-recognition/blob/master/LICENSE.txt
 
