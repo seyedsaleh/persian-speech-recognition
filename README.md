@@ -7,9 +7,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -17,14 +14,12 @@
   <h3 align="center">word-recognition</h3>
 
   <p align="center">
-    Simple word recognition using CNN on Raspberry Pi board 🗣
+    Simple single persian word speech recognition using CNN on Raspberry Pi board 🗣
     <br />
     <a href="https://github.com/seyedsaleh/word-recognition"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://colab.research.google.com/drive/1T7FZd5krcsOHAki55z0GL2jeNbS7GuTq?usp=sharing">Demo Music Generation (Google Colab)</a>
-    ·
-    <a href="https://colab.research.google.com/drive/1bxy2XzbMsUhgLSDcQH_ElKL7K-dGGjD-?usp=sharing">Demo Multi-Instrument Music Generation (Google Colab)</a>
+    <a href="https://colab.research.google.com/drive/1mlSL36sGjiHFRqwwSazPifH6K6O7bxf4?usp=sharing">Demo persian word speech recognition (Google Colab)</a>
     .
     <a href="https://github.com/seyedsaleh/word-recognition/issues">Report Bug & Request Feature</a>
   </p>
@@ -46,23 +41,30 @@
     <li><a href="#results">Results</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#datasets">Datasets</a></li>
-    <li><a href="#refereces">Refereces</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
   </ol>
 </details>
-
 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<p> <img src="https://user-images.githubusercontent.com/47852354/141186269-d31ec094-8061-4edc-b862-8e1deb3da46f.png" width="600"> </p>  Generative adversarial networks have been proposed as a way of efficiently training deep generative neural networks. We propose a generative adversarial model that works on continuous sequential data, and apply it by training it on a collection of classical music. We conclude that it generates music that sounds better and better as the model is trained, report statistics on generated music, and let the reader judge the quality by downloading the generated songs.
+<p> <img src="https://user-images.githubusercontent.com/47852354/143776840-15ead278-2b95-4718-9751-b57c5a18693f.png" width="600"> </p>  
 
-Recently, generative neural networks have taken the stage for artistic pursuits, such as image generation and photo retouching. Another area where these deep learning networks are beginning to leave a mark is in music generation. In this project, our goal is to explore the use of **LSTM** and **GAN neural networks** to generate music that seems as if it were human-made.
-By treating the notes and chords within **MIDI** files as discrete sequential data, we were able to train these two models and use them to generate completely new MIDI files. 
 
-Listen to our results! :smile:
+In this project, everything starts from a spoken speech from which features are extracted to recognize which word was said (which turns into a classification task). The end goal is to accurately identify a set of predefined words from short audio clips.
+There are six classes to recognize. There is no problem adding as much as you may wish. You should change the number of model category output and input dataset labels a bit.
+For instance, the task in this project will be to classify audio between six words in the Farsi language (words meaning in the bracket):
+*   Garm [Hot]
+*   Sard [Cold]
+*   Roshan [Bright]
+*   Tarik [Dim]
+*   Khodkar [Automatic]
+*   Dasti [Manual]
+
+Although single word speech recognition is not suitable for continuous speech recognition, it could be used to build a voice assistant or bot. To show this capability, we have implemented the algorithm on the Raspberry Pi board.
+
+Look at our result! :smile:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -71,12 +73,11 @@ Listen to our results! :smile:
 
 Major frameworks/libraries used to this project:
 
-* [Python 3.8](https://www.python.org/)
-* [Tensorflow , Keras](https://www.tensorflow.org/)
-* [Midi2audio](https://github.com/bzamecnik/midi2audio)
-* [Music21](https://web.mit.edu/music21/)
-* [Numpy](https://numpy.org/)
-
+* [python 3.8](https://www.python.org/)
+* [tensorflow , keras](https://www.tensorflow.org/)
+* [gpiozero]( https://gpiozero.readthedocs.io/en/stable/)
+* [librosa](https://librosa.org/doc/latest/index.html)
+* [numpy](https://numpy.org/)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -84,52 +85,65 @@ Major frameworks/libraries used to this project:
 <!-- PARTS -->
 ## Parts
 
-**MIDI format**
-an acronym for Musical Instrument Digital Interface, a technical standard that describes a communications protocol, digital interface, and electrical connectors that connect a wide variety of electronic musical instruments, computers.
+**Data preparation and augmentation**
+
+Due to the lack of data in the collected database, we will add some *noise* to each data and use it as new data for network training. The extra noise power is calculated according to the power of each signal so that the audio signal is not completely damaged.
+
+In this way, we will have about **500** data for each word to train our word recognition network.
+We will use one audio channel (mono) to read each voice. Thus, for each sound, we will have a signal with a specific sampling frequency; the sampling frequency of the input dataset signals is **54,000 Hz,** which we did not change.
+
+To clear the data, we read the zero values ​​after reading the audio signals from both sides. (trimming)
+
+Finally, we sorted data by numbers, and the original audio and the noise files are stored in a folder with the word name as the label.
 
 
-**Music21** is a powerful library in python whose tools are very helpful for creating, analysis and processing of audio files like songs, melodies and etc..
-In this project, we have used this library for our purposes of converting the MIDI files into notes, categorizing of notes for preparing the training data, and choosing the playing instruments for the output of our GAN and converting it back to MIDI.
+**Pre-processing:**
+
+<p> <img src="https://user-images.githubusercontent.com/47852354/143778553-c23df68f-26c6-49c4-a922-e246680864c7.png" width="500"> </p> 
+
+We have two critical problems for preparing data to feed into the neural network.
+
+1.   We can't just feed an audio file to a CNN. That's outrageous!
+2.   We need to prepare a fixed size vector for each audio file for classification.
+
+> What's the solution?
+
+1.   We could use embedding to overcome this problem. An embedding is a mapping from discrete objects, such as words vectors of real numbers.
+There are a lot of techniques and python packages for audio feature extraction. We use the most obvious and simple one, **MFCC encoding**, which is super effective for working with speech signals.
+
+2.   To overcome this problem, all we need to do is pad the output vectors with a constant value of 0.
+MFCC vectors might vary in size for different audio inputs; CNN can't handle sequence data, so we need to prepare a fixed size vector for all audio files.
 
 
-**MIDI Class:**
-- Parser
-- sequence preparation
-- MIDI creation
+*MFCC (Mel Frequency Cepstral Coefficients): In short, In sound processing, the Mel-frequency cepstrum (MFC) represents the short-term power spectrum of a sound, based on a linear cosine transform of a log power spectrum on a nonlinear Mel scale of frequency.*
 
-**Parsing MIDI file and preparing the training data and preparing data for C-RNN-GAN network**
-<p> <img src="https://user-images.githubusercontent.com/47852354/141293958-b829dce5-64e2-439b-b45b-4667608d13b6.png" width="650"> </p> 
-
-**Model Class:**
-- Discriminator
-- Generator
-- Train
-- Plot loss function
-- Save model
-
-**Generative Adversarial Network (GAN) vs. LSTM**
-<p> <img src="https://user-images.githubusercontent.com/47852354/141293644-9504c1c3-1713-4533-a91d-8e4637edd961.png" width="350">
-<img src="https://user-images.githubusercontent.com/47852354/141293667-67f8be01-d6ad-4a91-8058-bb928048a771.png" width="250"> </p> 
-
-**C-RNN-GAN Network Structure**
-<p> <img src="https://user-images.githubusercontent.com/47852354/141293801-1402eb14-6e05-4ff4-a2eb-5af0abcbf239.png" width="400"> </p> 
+Process:
+We will process the signal and get its **MFCC**, so finally, we are pooling signal with 0 to the size of predefined *max_width*. Then, we read all sound files from each labeled directory and do the mfcc transform, then save the mfcc created matrices in a .npy file named after the name of the label to use for the training network.
 
 
-The project has been done with aid of GPU Computing and the use of NVIDIA cuDNN and NVIDIA CUDA Toolkit. It helped us to use Tensorflow with GPU support for computing and learning with more compatibility.
-The model has been trained on an **NVIDIA GeForce GTX 1080Ti GPU**.
-**CUDA** is a parallel computing platform interface that allows software developers to use GPUs for ML computing.
+**Model**
+
+We use a Convolutional Neural Network (CNN) with one-dimensional convolutions on the raw audio waveform to classify samples. 
+
+<p> <img src="https://data-flair.training/blogs/wp-content/uploads/sites/2/2019/07/speech-recognition-using-CNN.png" width="500"> </p> 
+
+
+
+**Raspberry Pi code**
+
+<p> <img src="https://user-images.githubusercontent.com/47852354/143778569-0be4680f-28d1-4984-909a-b0af11f01423.png" width="500"> </p> 
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
 <!-- RESULTS -->
 ## Results
-<p> <img src="https://user-images.githubusercontent.com/47852354/141289514-87b11009-2835-407f-8cf3-dc99ed860811.png" width="300"> </p> 
 
-https://user-images.githubusercontent.com/47852354/141285440-be56d13f-abb4-4956-9ae3-c6845ed1fd12.mov
+The model achieves **99.73%** accuracy on the validation set. The results show that the model can predict samples of words it has seen during training with high accuracy. Still, it somewhat struggles to generalize to terms outside the training data scope and extremely noisy samples.
 
-https://user-images.githubusercontent.com/47852354/141285431-a525b350-857f-470a-9465-7935a80a06d6.mov
+<p> <img src="https://user-images.githubusercontent.com/47852354/143778330-22752161-0207-4610-950b-5f59015621ef.png" width="300"> </p> 
+
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -146,7 +160,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
 <!-- DATASETS -->
-## Datasets
+## Dataset
 
 
 We will use our own dataset which we have collected for this project.
@@ -162,40 +176,13 @@ Each folder contains approximately 250 audio files for each word. The name of th
 
 
 
-<!-- REFERENCES -->
-## Refereces
-
-[1] *Mogren, Olof. (2016). C-RNN-GAN: Continuous recurrent neural networks with adversarial training. [arXiv:1611.09904](https://arxiv.org/abs/1611.09904).* 
-
-[2] *“Generating Music with GANs—An Overview and Case Studies” at ISMIR 2019 (November 4th at Delft, The Netherlands). [salu133445.github.io/ismir2019tutorial](https://salu133445.github.io/ismir2019tutorial/).* 
-
-[3] *Goodfellow, Ian & Pouget-Abadie, Jean & Mirza, Mehdi & Xu, Bing & Warde-Farley, David & Ozair, Sherjil & Courville, Aaron & Bengio, Y.. (2014). Generative Adversarial Nets.  [ArXiv](https://arxiv.org/abs/1406.2661).* 
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 <!-- CONTACT -->
 ## Contact
 
 Seyedmohammadsaleh Mirzatabatabaei - [@seyedsaleh](https://github.com/seyedsaleh) - seyedsaleh.edu@gmail.com
 
 
-Project Link: [https://github.com/seyedsaleh/music-generator](https://github.com/seyedsaleh/word-recognition)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Multi-instrument by partitioning and joining each part (Music21 Instrument package)
-- [ ] Use offset, duration, velocity with pyPianoroll package
-- [ ] UI mobile and desktop application to create music
-- [ ] using CGANs network to avoid falchs
-
-See the [open issues](https://github.com/seyedsaleh/word-recognition/issues) for a full list of proposed features (and known issues).
+Project Link: [https://github.com/seyedsaleh/word-recognition](https://github.com/seyedsaleh/word-recognition)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
