@@ -89,7 +89,7 @@ Major frameworks/libraries used to this project:
 
 **Data preparation and augmentation**
 
-Due to the lack of data in the collected database, we will add some *noise* to each data and use it as new data for network training. The extra noise power is calculated according to the power of each signal so that the audio signal is not completely damaged.
+Considering the lack of data in the collected database, we will add some *noise* to each data and use it as new data for network training. The extra noise power is calculated according to the power of each signal so that the audio signal is not completely damaged.
 
 In this way, we will have about **500** data for each word to train our word recognition network.
 We will use one audio channel (mono) to read each voice. Thus, for each sound, we will have a signal with a specific sampling frequency; the sampling frequency of the input dataset signals is **54,000 Hz,** which we did not change.
